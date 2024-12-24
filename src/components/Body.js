@@ -1,6 +1,6 @@
 import RestaurantCard from "./RestaurantCard";
 import React, { useState, useEffect } from "react";
-import { RESTAURANT_LIST } from "../utilities/constants";
+import { SWIGGY_API } from "../utilities/constants";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utilities/useOnlineStatus";
@@ -10,7 +10,7 @@ const Body = () => {
   // Local state variable
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [filteredResturant, setFilteredResturant] = useState([]);
+  const [filteredRestaurant, setFilteredRestaurant] = useState([]);
   const RestaurantCardPromoted = WithPromotedLable(RestaurantCard);
 
   useEffect(() => {
@@ -18,11 +18,18 @@ const Body = () => {
   }, []);
 
   const fetchData = async () => {
-    // const data = await fetch(RESTAURANT_LIST); for actual api not for mock data
-    // const json = await data.json();
+    const data = await fetch(SWIGGY_API);
+    const json = await data.json();
 
-    setListOfRestaurants(RESTAURANT_LIST);
-    setFilteredResturant(RESTAURANT_LIST); //not able to fetch, data is coming from line no 8.
+    setListOfRestaurants(
+      json.data.cards[1].card.card.gridElements.infoWithStyle.restaurants
+    );
+    // console.log(
+    //   json.data.cards[1].card.card.gridElements.infoWithStyle.restaurants);
+
+    setFilteredRestaurant(
+      json.data.cards[1].card.card.gridElements.infoWithStyle.restaurants
+    );
   };
 
   //promoted label
@@ -51,34 +58,36 @@ const Body = () => {
             className="border-2 bg-red-300 p-[7px] rounded-lg text-lg "
             onClick={() => {
               //filters the restaurant cards and updates thr UI
-              const filteredResturant = listOfRestaurants.filter((res) =>
+              const filteredRestaurant = listOfRestaurants.filter((res) =>
                 res.info.name.toLowerCase().includes(searchText.toLowerCase())
               );
-              setFilteredResturant(filteredResturant);
+              setFilteredRestaurant(filteredRestaurant);
             }}
           >
             Search
           </button>
         </div>
+
         <button
           className="border-2 p-2 bg-red-300 rounded-lg"
           onClick={() => {
             const filteredList = listOfRestaurants.filter(
               (res) => res.info.avgRating > 4
             );
-            setListOfRestaurants(filteredList);
+            setFilteredRestaurant(filteredList);
           }}
         >
           Top Rated Restuarants
         </button>
       </div>
+
       <div className="flex flex-wrap">
-        {filteredResturant.map((restaurant) => (
+        {filteredRestaurant.map((restaurant) => (
           <Link
-            key={restaurant.info.id}
-            to={`/restaurant/${restaurant.info.id}`}
+            key={restaurant?.info?.id}
+            to={`/restaurant/${restaurant?.info?.id}`}
           >
-            {restaurant.info.promoted ? (
+            {restaurant?.info?.promoted ? (
               <RestaurantCardPromoted restaurantData={restaurant} />
             ) : (
               <RestaurantCard restaurantData={restaurant} />

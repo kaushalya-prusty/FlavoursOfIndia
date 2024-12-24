@@ -4,6 +4,9 @@ export const LOGO_URL =
 export const RESTURANT_LOGO_CDN =
   "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/";
 
+export const SWIGGY_API =
+  "https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.45970&lng=77.02820&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"; // Gurgon based- menu can be featched 1001-restaurant-list.
+
 export const RESTAURANT_LIST = [
   {
     info: {

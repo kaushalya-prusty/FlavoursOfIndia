@@ -11,7 +11,7 @@ const RestaurantCard = (props) => {
     deliveryTime,
   } = restaurantData?.info;
   return (
-    <div className=" w-56 p-2 rounded-lg border-2 bg-gray-300 hover:border-gray-400 m-2">
+    <div className=" w-56 p-2 rounded-lg border-2 bg-gray-200 hover:border-gray-400 m-2">
       <img
         className="rounded-xl h-36 w-52"
         alt="Biriyani"
